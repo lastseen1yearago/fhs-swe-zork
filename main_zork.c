@@ -8,7 +8,8 @@ int main() {
     //Intro:
     intro();
 
-    const char* story_pieces[] = {
+    const char* story_pieces[] = {                      //To Do: Baum mit storypieces in der Main erstellen oder eine eigene Funktion dafuer, das Array faellt dann weg!!
+        "Task: Find your and everyone elses ID cards.",
         "Go to cafeteria.",
         "Go to engine-room.",
         "Go to storage.",
@@ -20,27 +21,16 @@ int main() {
         "Wake up Laura.",
         "Wake up Malory.",
         "Wake up Randy.",
-        ""
-    }
-
-// Entscheidungsbaum
-    const int numNodes = ?????;
-    int choices[][2] = {
-        ???
     };
 
-// "Gameplay", also solange Fragen bis ein Game Over Status erreicht wird
-    int currentNode = 0;
-    while (1) {
-        printf("%s\n", story[currentNode]);
+// Entscheidungsbaum -> soll lieber doch Binary Tree werden, Main muss dementsprechend umgebaut werden...
+// BSP: TreeNode* root = createNode("Task: Find your and everyone elses ID cards.");
 
-        if (choices[currentNode][0] == -1) {
-            break;
-        }
+    // Spiel starten und laufen lassen:
+    gameplay(root);
 
-        int choice = getUserChoice("Was willst du tun?", &story[choices[currentNode][0]], 2);
-        currentNode = choices[currentNode][choice - 1];
-    }
+    // nach Spielende (Break-Condition der gameplay Funktion) muss memory wieder gefreed werden:
+    freeTree(root);
 
     return 0;
 }
