@@ -1,30 +1,26 @@
 #include "zorklib.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 // Main File fuer das richtige spielen des zork clons
 
 int main() {
-    //Intro:
+    // Intro:
     intro();
 
-    const char* story_pieces[] = {                      //To Do: Baum mit storypieces in der Main erstellen oder eine eigene Funktion dafuer, das Array faellt dann weg!!
-        "Task: Find your and everyone elses ID cards.",
-        "Go to cafeteria.",
-        "Go to engine-room.",
-        "Go to storage.",
-        "Go to administration.",
-        "Pick up ID",
-        "Check crewmates IDs",
-        "Wake up Aaron.",
-        "Wake up Sterling.",
-        "Wake up Laura.",
-        "Wake up Malory.",
-        "Wake up Randy.",
-    };
-
-// Entscheidungsbaum -> soll lieber doch Binary Tree werden, Main muss dementsprechend umgebaut werden...
-// BSP: TreeNode* root = createNode("Task: Find your and everyone elses ID cards.");
+    // Story (=Entscheidungsbaum) erstellen
+    
+                        // Drei Gedankenpunkte dazu:
+                        // 1.) wie weit kann man das automatisieren oder wenigstens in einer Funktion verstecken, damit es nicht in der Main stehen muss
+                        // 2.) das gehoert natuerlich noch um Faktor X erweitert
+                        // 3.) die Texte bzw. die Knoten gehoeren auch so geschrieben, dass sie fuer die Auswahl im Spiel Sinn machen bzw. jeweils an richtiger Stelle stehen / auch klar ist was zu tun ist
+    
+    TreeNode* root = create_new_node("Task: Find your and everyone elses ID cards.");
+    root->left = create_new_node("Go to cafeteria.");
+    root->right = create_new_node("Go to engine-room.");
+    root->left->left = create_new_node("Go to storage.");
+    root->left->right = create_new_node("Go to administration.");
 
     // Spiel starten und laufen lassen:
     gameplay(root);
