@@ -13,12 +13,12 @@ int main() {
 	 
 	Beispiel:
 	
-	TreeNode* root = create_new_node("Start","'Hmm... let's try going over there...'");			->			Start-Node: erster Char ist Option, zweiter Char ist der Text-Out NACHDEM eine Option gewählt wurde!!
+	TreeNode* root = create_new_node("Start","'Hmm... let's try going over there...'");			->			Start-Node: erster Char ist Option, zweiter Char ist der Text-Out NACHDEM eine Option gewaehlt wurde!!
 	
 	//Linker Teilbaum
     root->left = create_new_node("Go to 1","");													->			Option 1
-    root->left->left = create_new_node("Go to 3","To be continued...");							->			wenn jetzt "Go to 3" gewählt wird, wird nichts geprintet (Go to 1 hat keine root->prntmessage)
-    root->left->right = create_new_node("Go to 5","Game Over");									->			wenn dan "Go to 5" gewählt wird, wird die prntmessage ("tbc...") von "Go to 3" geprintet und auch ein Game Over weil letzte Node
+    root->left->left = create_new_node("Go to 3","To be continued...");							->			wenn jetzt "Go to 3" gewaehlt wird, wird nichts geprintet (Go to 1 hat keine root->prntmessage)
+    root->left->right = create_new_node("Go to 5","Game Over");									->			wenn dan "Go to 5" gewaehlt wird, wird die prntmessage ("tbc...") von "Go to 3" geprintet und auch ein Game Over weil letzte Node
 	
 	//Rechter Teilbaum
     root->right = create_new_node("Go to 2","");												->			Option 2
@@ -31,8 +31,10 @@ int main() {
         
         - - -  - - -  - - -  - - -  - - -  - - -  - - -  - - - Braindump - - -  - - -  - - -  - - -  - - -  - - -  - - -  - - - */
 
-    // Die Story baut man in den Baum ein -> dafür gibt es jetzt in der node die Variable prntmessage!
-    // So lässt sich das ganze auch dynamisch gestalten
+    //TO DO:
+    // Die Story baut man in den Baum ein -> dafuer gibt es jetzt in der node die Variable prntmessage! (siehe Braindump ^)
+    // So laesst sich das ganze auch dynamisch gestalten
+    
     // Story (=Entscheidungsbaum) erstellen
     TreeNode* root = create_new_node("Start","'Hmm... let's try going over there...'");
 
