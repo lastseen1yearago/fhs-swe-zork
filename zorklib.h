@@ -10,5 +10,5 @@ typedef struct node {
 
 void intro();
 void gameplay(TreeNode* root);
-void freeTree(TreeNode* root);
+void delete_tree(TreeNode* root);
 TreeNode* create_new_node(const char* task, const char* print);

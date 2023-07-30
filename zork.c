@@ -10,11 +10,12 @@ void intro() {
     printf("What happened?\n");
     printf("Who are you?\n");
     printf("And what is this place around you?\n");
-    printf("Your head hurts and you can barely see. You slowly open your capsules door to find that 5 other capsules are still closed -  the others inside still asleep.\n");
+    printf("Your head hurts and you can barely see. You slowly open your capsules door to find that the other capsules are still closed - the others inside still asleep.\n");
     printf("Your mind clears up a little and you decide to play it safe.\n");
     printf("'Before I try to wake up anyone else, I should find out who they are, and more importantly, who I am.'\n");
-    printf("You take a look at your wrist, carrying a small screen displaying a map of the spaceship you are currently traveling on - the Marksman. Right now you are in the Medbay room.\n\n");
-    printf("Task: Find your and everyone elses ID cards.\n");
+    printf("You take a look at your wrist, carrying a small screen displaying a map of the spaceship you are currently traveling on - the Marksman - a military transport ship. Right now you are in the crews sleeping quarters.\n\n");
+    printf("You check the traveling logs. Your ship picked up a crate of undisclosed lab equipment. Inspecting the load description you find out that you have been transporting experimental parasites.\n");
+    printf("You're the only one awake... your inner voice tells you you need to stop the ship from reaching earth. Comms are cut out, you don't if anyone is infected by the parasites. Be careful who you trust\n");
 }
 
 // Neuen Baumknoten anlegen:
@@ -48,32 +49,38 @@ void gameplay(TreeNode* root) {
 
         // userinput verarbeiten (1 = left | 2 = right)
         if (input == 1) {
-            printf("%s\n", root->prntmessage);
+            printf("%s\n", root->left->prntmessage);
             gameplay(root->left);
         } else if (input == 2) {
-            printf("%s\n", root->prntmessage);
+            printf("%s\n", root->right->prntmessage);
             gameplay(root->right);
         }
     }
 
     // gibt es weder links noch rechts einen weiteren Knoten, so endet das Spiel (Game Over Status)
     else if (root->left == NULL && root->right == NULL) {
-        printf("%s\n", root->prntmessage);
+        // printf("%s\n", root->prntmessage);   ->  braucht man mit der Loesung über Input-Variablen nicht mehr???
         printf("Press any key to end game.\n");
         getchar();
         return; 
     }
 }
 
-// nach dem Spielen soll der allokierte Speicher auch wieder freigegeben werden koennen:
-void freeTree(TreeNode* root) {
-    if (root == NULL) {
-        return; }
-    else {
-        freeTree(root->left);
-        freeTree(root->right);
-        free(root->prntmessage);
-        free(root->taskmessage);
-        free(root); 
+void delete_tree(TreeNode *root) {
+    // auf child-nodes checken
+    if (root->left == NULL && root->right == NULL) {
+        free(root);
     }
+    // mit links loeschen beginnen
+    else if (root && root->left) {
+        root = root->left;
+        delete_tree(root);
+    }
+    // rechts loeschen wenn links geloescht wurde bzw. links nichts war
+    else if (root && root->right) {
+        root = root->right;
+        delete_tree(root);
+    }
+    // am Ende den root-Knoten loeschen
+    free(root);
 }
