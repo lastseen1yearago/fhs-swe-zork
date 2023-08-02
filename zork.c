@@ -15,7 +15,7 @@ void intro() {
     printf("'Before I try to wake up anyone else, I should find out who they are, and more importantly, who I am.'\n");
     printf("You take a look at your wrist, carrying a small screen displaying a map of the spaceship you are currently traveling on - the Marksman - a military transport ship. Right now you are in the crews sleeping quarters.\n\n");
     printf("You check the traveling logs. Your ship picked up a crate of undisclosed lab equipment. Inspecting the load description you find out that you have been transporting experimental parasites.\n");
-    printf("You're the only one awake... your inner voice tells you you need to stop the ship from reaching earth. Comms are cut out, you don't if anyone is infected by the parasites. Be careful who you trust\n");
+    printf("You're the only one awake... your inner voice tells you you need to stop the ship from reaching earth or find a way to make sure everyones cured. Comms are cut out, you don't know who is infected by the parasites. Be careful who you trust\n");
 }
 
 // Neuen Baumknoten anlegen:
