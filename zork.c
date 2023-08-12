@@ -20,10 +20,21 @@ void intro() {
 
 // Neuen Baumknoten anlegen:
 TreeNode* create_new_node(const char* task, const char* print) {
+    // neue Node allokieren
     TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
+
+    // failsafe malloc (falls ein Fehler bei der Allokierung auftreten sollte)
+    if (newNode == NULL)
+    {
+        printf("Error while trying to allocate memory for story node.\n");
+        return NULL;
+    }
+    
+    //2x strdup (string duplicate) sonst pointer target type error
     newNode->taskmessage = strdup(task);                     
     newNode->prntmessage = strdup(print);
-    //2x strdup (string duplicate) sonst pointer target type error
+    
+    // links und rechts NULL setzen
     newNode->left = NULL;
     newNode->right = NULL;
     return newNode;
@@ -67,20 +78,22 @@ void gameplay(TreeNode* root) {
 }
 
 void delete_tree(TreeNode *root) {
-    // auf child-nodes checken
-    if (root->left == NULL && root->right == NULL) {
+    // checken ob ueberhaupt ein Knoten vorhanden ist
+    if (root == NULL) {
+        return;
+    }
+
+    // checken ob es child Nodes gibt -> wenn es keine gibt kann root inkl. tast- & prntmessage deleted werden
+    else if (root->left == NULL && root->right == NULL)
+    {
+        free(root->taskmessage);
+        free(root->prntmessage);
         free(root);
     }
-    // mit links loeschen beginnen
-    else if (root && root->left) {
-        root = root->left;
-        delete_tree(root);
+    
+    // erst links, dann rechts löschen
+    else {
+        delete_tree(root->left);
+        delete_tree(root->right);
     }
-    // rechts loeschen wenn links geloescht wurde bzw. links nichts war
-    else if (root && root->right) {
-        root = root->right;
-        delete_tree(root);
-    }
-    // am Ende den root-Knoten loeschen
-    free(root);
 }

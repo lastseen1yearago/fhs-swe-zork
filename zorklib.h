@@ -8,6 +8,8 @@ typedef struct node {
     struct node* right;             // Zeiger auf den rechten Kindknoten (rechte Wahl)
 } TreeNode;
 
+
+
 void intro();
 void gameplay(TreeNode* root);
 void delete_tree(TreeNode* root);

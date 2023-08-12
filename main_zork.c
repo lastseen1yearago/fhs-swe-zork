@@ -9,7 +9,7 @@ int main() {
     // Intro:
     intro();
     
-    // Story (=Entscheidungsbaum) erstellen -> alle Nodes ausser End-Nodes muessen left- & right-Knoten haben
+    // Story (=Entscheidungsbaum) erstellen -> alle Nodes außer End-Nodes müssen left- & right-Knoten haben
     TreeNode* root = create_new_node("Start","'Hmm... let's try going over there...'");
 
     // linker Teilbaum (Story mit possibilities A)
