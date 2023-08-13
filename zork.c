@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-// alle noetigen Funktionen fuer den zork Nachbau
+// alle noetigen Funktionen fuer das fertige Spiel
 // Intro, Spielstart:
 void intro() {
     printf("You wake up in your sleeping capsule in a cold sweat.\n");
@@ -40,8 +40,71 @@ TreeNode* create_new_node(const char* task, const char* print) {
     return newNode;
 }
 
+//**********************************************************************************************************************************************************************
+/*
+    Die tree_to_llist / print_llist Funktion muss noch irgendwie angepasst werden damit wirklich nur die gewaehlten Nodes gedruck werden!!!
+    Zur Zeit wird der gesamte erstellte Binary Tree ausgegeben... 
+    Idee:
+        - In der Tree struct ein Flag auf 0 / 1 | j / n setzen und nur geflaggte Nodes drucken ?
+*/
+//**********************************************************************************************************************************************************************
+
+// Linked-List erstellen und befuellen:
+ListNode* tree_to_llist(ListNode* head, TreeNode* currentNode) {
+    if (currentNode == NULL) {
+        return head;
+    }
+
+    // neue ListNode allokieren 
+    ListNode* newNode = (ListNode*)malloc(sizeof(ListNode));
+
+    // failsafe malloc (falls ein Fehler bei der Allokierung auftreten sollte)
+    if (newNode == NULL)
+    {
+        printf("Error while trying to allocate memory for linked list node.\n");
+        return NULL;
+    }
+
+    // erstellte ListNode mit Inhalt der uebergebenen TreeNode befuellen
+    newNode->curr_node = currentNode;
+    newNode->next = NULL;
+
+    // ist die Liste leer (= neue Liste) dann wird die erstellte neue ListNode zum head der Liste
+    if (head == NULL) {
+        head = newNode;
+    } 
+    
+    else {
+        // gibt es bereits einen head soll an diesen bzw. an die letzte ListNode angehängt werden
+        ListNode* current = head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = newNode;
+    }
+
+    // rekursiv nach links und rechts (child nodes) sehen / einsammeln
+    head = tree_to_llist(head, currentNode->left);
+    head = tree_to_llist(head, currentNode->right);
+
+    return head;
+}
+
+// erstellte Linked-List anzeigen: 
+void print_llist(ListNode* head) {
+    // Titel für die Entscheidungsliste
+    printf("\nDeine Story:\n");
+    ListNode* current = head;
+    
+    // printen der gewaehlten Nodes in einer Entscheidungsliste
+    while (current != NULL) {
+        printf("%s\n", current->curr_node->taskmessage);
+        current = current->next;
+    }
+}
+
 // Hauptfunktion fuers "Gameplay":
-void gameplay(TreeNode* root) {
+void gameplay(TreeNode* root, ListNode* select) {
     if (root == NULL) {
         return ; }
 
@@ -53,30 +116,39 @@ void gameplay(TreeNode* root) {
         do {
             printf("Pick your Option: ");
             scanf("%d", &input);
+            // getchar weil sonst funktioniert die Abfrage nicht richtig (???)
             getchar();
-            // getchar wegen einem Zeilenumbruch
             // Input solange abfragen bis player 1 / 2 eingibt (ansonsten wird auf dem derzeitigen Auswahlknoten verharrt)
+            // do-while weil beim Ersten Aufruf noch kein input vorhanden ist (normale while greift dann nie!)
         } while (input != 1 && input != 2);
 
         // userinput verarbeiten (1 = left | 2 = right)
         if (input == 1) {
+            //add_node_to_list(select, root->left);
+            select = tree_to_llist(select, root->left);
             printf("%s\n", root->left->prntmessage);
-            gameplay(root->left);
+            gameplay(root->left, select);
         } else if (input == 2) {
+            //add_node_to_list(select, root->left);
+            select = tree_to_llist(select, root->right);
             printf("%s\n", root->right->prntmessage);
-            gameplay(root->right);
+            gameplay(root->right, select);
         }
     }
 
     // gibt es weder links noch rechts einen weiteren Knoten, so endet das Spiel (Game Over Status)
     else if (root->left == NULL && root->right == NULL) {
-        // printf("%s\n", root->prntmessage);   ->  braucht man mit der Loesung über Input-Variablen nicht mehr???
-        printf("Press any key to end game.\n");
+        // Linked List befuellen und printen
+        print_llist(select);
+
+        // end game message
+        printf("\nPress any key to end game.\n");
         getchar();
         return; 
     }
 }
 
+// aufraeumen Memory des Trees:
 void delete_tree(TreeNode *root) {
     // checken ob ueberhaupt ein Knoten vorhanden ist
     if (root == NULL) {
@@ -95,5 +167,23 @@ void delete_tree(TreeNode *root) {
     else {
         delete_tree(root->left);
         delete_tree(root->right);
+    }
+}
+
+// aufraeumen Memory der List:
+void delete_linked_list(ListNode* head) {
+    // checken ob ueberhaupt etwas zu loeschen vorhanden ist
+    if (head == NULL) {
+        return;
+    }
+
+    // head als current Variable deklarieren
+    ListNode* current = head;
+
+    // solange die current Variable nicht NULL ist kann nun per anlegen einer temp Variable Schritt für Schritt durch die Liste gegangen und geloescht werden
+    while (current != NULL) {
+        ListNode* temp = current;
+        current = current->next;
+        free(temp);
     }
 }
