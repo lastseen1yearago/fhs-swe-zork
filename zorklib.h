@@ -1,5 +1,6 @@
-// Library fuer die Funktionen und Baumstruktur unseres zork Nachbaus
+// Library fuer die Funktionen und Baumstruktur unseres zork Nachbaus  
 // implemetiert in zork.c / verwendet in main_zork.c
+// Compile: gcc -Wall -Werror -Wpedantic -std=c18 -o zork main_zork.c zork.c
 
 // Definition TreeNode:
 typedef struct node {
@@ -7,6 +8,7 @@ typedef struct node {
     char* prntmessage;              // welceh Message geprintet werden soll
     struct node* left;              // Zeiger auf den linken Kindknoten (linke Wahl)
     struct node* right;             // Zeiger auf den rechten Kindknoten (rechte Wahl)
+    int flag;                       // Flag zum setzen ob eine TreeNode zur LinkedList hinzugefuegt werden soll        
 } TreeNode;
 
 // Definition ListNode:
@@ -17,6 +19,9 @@ typedef struct linkedlistnode {
 
 // Gameplay-Funktionen:
 void intro();
+void color_red();
+void color_stnd();
+int randnum(int val);
 void gameplay(TreeNode* root, ListNode* select);
 
 // Struktur-Funktionen:

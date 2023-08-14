@@ -1,7 +1,7 @@
-#include "zorklib.h"
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include "zorklib.h"
 
 // Main-File fuer den Aufbau des Binary-Trees (Entscheidungsbaum) und ausfuehren der Gameplay und Cleanup-Funktionen
 // Verwendet werden die oben inkludierten Libraries inklusive der Eigenkreation zorklib.h
@@ -13,7 +13,7 @@ int main() {
     // Linked List anlegen / initiieren:
     ListNode* head = NULL;
 
-    // Story (=Entscheidungsbaum) erstellen / initieren -> alle Nodes außer End-Nodes müssen left- & right-Knoten haben
+    // Story (=Entscheidungsbaum) erstellen / initieren -> alle Nodes außer End-Nodes muessen left- & right-Knoten haben
     TreeNode* root = create_new_node("Start","'Hmm... let's try going over there...'");
 
     // linker Teilbaum (Story mit possibilities A)
@@ -107,7 +107,12 @@ int main() {
     root->right->right->left->left->left->right->left->right = create_new_node("Search crates.","Searching the crates gets you infected. Your mindless body makes its way back to the lab to stop Lyn. You lose."); // game over
 
     // Spiel starten und laufen lassen:
-    gameplay(root, head);
+    // if-Abfrage damit gecheckt wird ob die root eh nicht NULL ist!
+    if (root != NULL)
+    {
+        //starte adventure game:
+        gameplay(root, head);
+    }
 
     // nach Spielende (Break-Condition der gameplay Funktion) muss memory wieder gefreed werden:
     delete_tree(root);
