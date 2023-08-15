@@ -45,7 +45,7 @@ TreeNode* create_new_node(const char* task, const char* print) {
     newNode->prntmessage = strdup(print);
 
     // failsafe falls strdup() die messages nicht befuellen kann
-    // es wird dann der gesamte Tree ausgehend der newNode deleted                  ->                  *** Ueberlegen: ist das smart so? Reicht es nicht die newNode freizugeben? der Tree wird dann am Ende der main geloescht...***
+    // es wird dann der gesamte Tree ausgehend der newNode deleted
     if (newNode->taskmessage == NULL || newNode->prntmessage == NULL)
     {
         printf("Error while trying to copy string into story node.\n");
@@ -101,35 +101,45 @@ ListNode* tree_to_llist(ListNode* head, TreeNode* currentNode) {
     return head;
 }
 
-// erstellte Linked-List anzeigen: 
+// erstellte Linked-List in File kopieren: 
 void print_llist(ListNode* head) {
-    // Titel fuer die Entscheidungsliste und ein paar gameplay messages
-    printf("\n - - - Your choices - - - \n");
-
+    // Ein paar gameplay messages fuer das Outputfile
     const char* msgs[NUMOFMSG] = {"Good choice: ", "Excellent choice: ", "Great choice: ", "Well chosen: ", "Good thinking: ", "Trusty feeling: "};
     
     // uebergebenen head als current Node setzen
     ListNode* current = head;
     int shwmsg = 0;
 
+    // File-Pointer anlegen
+    // open File und Titel printen - open mit w+ damit das File automatisch immer wieder frisch erstellt werden kann
+    FILE* stryfile;
+    stryfile = fopen("story.txt", "w+");
+    fprintf(stryfile, " - - - Your choices / story - - - \n\n");
+
     // printen der gewaehlten Nodes in einer Entscheidungsliste (flag = 1)
     while (current != NULL) {
-        if (current->curr_node->flag) {
+        if (current->curr_node->flag == 1) {
             // wenn die letzte Node der Liste erreicht wurde wird die critical Message (win / lose) geprintet
             if (current->next == NULL) {
-                printf("Critical choice: %s\n", current->curr_node->taskmessage);
+                fprintf(stryfile, "Critical choice: %s\n", current->curr_node->taskmessage);
+                fprintf(stryfile, "Outcome: %s\n", current->curr_node->prntmessage);
             }
 
             // gibt es noch eine ->next Node dann wird eine random Message geprintet und es geht weiter
             else {
                 shwmsg = randnum(NUMOFMSG);
-                printf("%s",msgs[shwmsg]);
-                printf("%s\n", current->curr_node->taskmessage);
+                fprintf(stryfile, "%s",msgs[shwmsg]);
+                fprintf(stryfile, "%s\n", current->curr_node->taskmessage);
+                fprintf(stryfile, "Outcome: %s\n", current->curr_node->prntmessage);
             }
         }
+
         // anschliessend wird die ->next Node zur aktuellen Node gesetzt
         current = current->next;
     }
+
+    // zuletzt File schliessen
+    fclose(stryfile);
 }
 
 // Hauptfunktion fuers "Gameplay":
